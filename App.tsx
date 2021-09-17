@@ -1,21 +1,53 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar as SB } from 'expo-status-bar';
+import React, { useState } from 'react';
+import { 
+  StyleSheet, 
+  Text, 
+  View,
+  Platform,
+  StatusBar
+ } from 'react-native';
+import { LandingScreen } from './src/screens/LandingScreen/LandingScreen';
+import * as Font from 'expo-font';
+import { useFonts } from 'expo-font'
+import  AppLoading from 'expo-app-loading'
+
+
+
+
+const getFonts = () => {
+  return Font.loadAsync({
+    'ArbeiBerry': require('./src/assets/fonts/ArbeiBerry.ttf')
+  })
+} 
+
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+
+  const [loaded, setLoaded] = useState(false);
+
+  if (loaded) {
+    return (
+      <View style={styles.container}>
+        <LandingScreen />
+        <SB style="auto" />
+      </View>
+    )
+  } else {
+    return <AppLoading 
+    startAsync={getFonts}
+    onError={() => console.log("error")}
+    onFinish={() => setLoaded(true)}
+  />
+  }
+
+
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    maxWidth: "100%",
+    paddingTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
   },
 });
