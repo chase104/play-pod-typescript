@@ -7,11 +7,10 @@ import {
   Platform,
   StatusBar
  } from 'react-native';
-import { LandingScreen } from './src/screens/LandingScreen/LandingScreen';
+import  LandingScreen  from './src/screens/LandingScreen/LandingScreen';
 import * as Font from 'expo-font';
 import { useFonts } from 'expo-font'
 import  AppLoading from 'expo-app-loading'
-
 
 
 

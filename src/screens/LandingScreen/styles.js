@@ -11,35 +11,48 @@ export default  styles = StyleSheet.create({
         flex: 9,
         alignItems: 'center',
     },
+    headerContainer: {
+        display: "flex",
+        width: "100%",
+        height: 116,
+    },
+    contentContainer: {
+        display: "flex",
+        alignItems: "center",
+        width: "100%",
+        flex: 4,
+
+    },
+    slidesContainer: {
+        display: "flex",
+        flexDirection: "row",
+        height: "100%",
+        flex: 4,
+    },
     footer: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: "space-around",
-        flex: 2,
+        flex: 1,
     },
-    headerContainer: {
-        display: "flex",
-        justifyContent: "flex-end",
-        width: "100%",
-        height: 100,
-        paddingBottom: 300,
+    initialTextContainer: {
+        position: "absolute",
+        top: 250,
+        fontWeight: "bold",
+        fontSize: 20
+
     },
     animatedContainer: {
         width: 200,
         height: 200,
     },
-    imageTouch: {
-        width: '100%',
-        height: '100%'
-    },
     logo: {
         width: '100%',
-        height: '100%'
+        height: '100%',
     },
     titleContainer: {
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center"
+        paddingTop: 200,
+        alignItems: "center",
     },
     button: {
         display: 'flex',
@@ -53,6 +66,18 @@ export default  styles = StyleSheet.create({
         width: "50%",
         fontFamily: 'ArbeiBerry'
     },
+    buttonText: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center',
+        textAlignVertical: 'center',
+        fontSize: 20,
+        fontWeight: 'bold',
+        backgroundColor: 'rgb(117, 203, 253)',
+        width: "100%",
+        fontFamily: 'ArbeiBerry'
+    }, 
     nope: {
         backgroundColor: "orange",
         height: '100%',
@@ -71,7 +96,7 @@ export default  styles = StyleSheet.create({
     },
     title: {
         fontSize: 30,
-        marginTop: 20
+        marginTop: 20,
     },
     subtitle: {
         fontSize: 20,
@@ -80,13 +105,39 @@ export default  styles = StyleSheet.create({
         marginTop: 30,
         textAlign: "center",
     },
-    youre: {
-        position: "absolute"
+    signUpSlidesContainer:{
+        display: "flex",
+        position: "absolute",
+        flexDirection: "row",
+        height: "100%",
+        width: "auto"
+    },
+    slide: {
+        width: "100%",
+        height: "100%",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    simpleTitle:{
+        marginBottom: 40,
+        fontWeight: 'bold',
+        fontSize: 20
+    },
+    inputLabel:{
+        fontWeight: 'bold',
+        fontSize: 16
+    },
+    simpleInput: {
+        borderWidth: 1,
+        fontWeight: 'bold',
+        padding: 12,
+        height: 40
     },
     formContainer: {
         display: "flex",
         width: "100%",
         justifyContent: 'center',
+        alignItems: "center",
         position: "absolute"
     },
     input: {
