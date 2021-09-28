@@ -1,61 +1,97 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, {  useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Dimensions, Image, Animated, TouchableOpacity, TextInput, BackHandler } from 'react-native';
 import styles from './styles';
 
 import Logo from '../../assets/logo.png';
 
 
-
 const LandingScreen = () => {
 
     const [appLocation, setAppLocation] = useState(1);
-    const [formState, setFormSate] = useState({})
+    const [signInState, setSignInState] = useState({email: '', password: ''})
+    const [newUser, setNewUser] = useState({
+        type: null,
+        schoolCode: "",
+        email: null,
+        password: "",
+        passwordCheck: "",
 
-    let returnForm = () => {
-        return (
-            <View style={styles.formContainer}>
-                <TextInput 
-                placeholder="Email"
-                onChangeText={(text) => { setFormState({...formState, email: text})}}
-                style={styles.input}
-                />
-                <TextInput 
-                placeholder="Password"
-                onChangeText={(text) => { setFormState({...formState, password: text})}}
-                style={styles.input}
-                />
-            </View>
-        )
+
+        // STUDENT
+        studentNumber: null,
+        alias: null,
+
+        // TEACHER
+    })
+    let screenWidth = Dimensions.get('window').width;
+    let marginValue = (screenWidth - 200) / 2;
+
+    const handleNewAccountChange = (property, value) => {
+        setNewUser({
+            ...newUser,
+            [property]: value
+        })
     }
 
-    const returnText = (textArray) => {
+    // useEffect(() => {
+    //     console.log(newUser)
+    //     console.log(signInState)
+    // }, [newUser, signInState])
+
+    const changeText = (property, placeHolder, isSignIn, text) => {
+        if (isSignIn) {
+            setSignInState({...signInState, [property]: text})
+        } else {
+            setNewUser({...newUser, [property]: text})
+        }
+    }
+
+    const returnText = (textArray, inputArray) => {
         return (
-            <View>
+            <View style={styles.basicTextContainer}>
                 {textArray.map((text) => {
-                    return <Text key={Math.random()} style={{fontWeight: "inherit"}}>{text}</Text>
+                    return <Text key={text+251235} style={styles.basicText}>{text}</Text>
                 })}
+                { inputArray != undefined ? 
+                        inputArray.map(({property, placeHolder, title, isSignIn}) => {
+                            return <View style={styles.textAndInputContainer} key={placeHolder}>
+                                <Text style={styles.inputLabel}>{title}</Text>
+                                <TextInput 
+                                placeholder={placeHolder}
+                                onChangeText={(text) => changeText(property, placeHolder, isSignIn, text)}
+                                defaultValue={property === "email" ? signInState.email : signInState.password}
+                                style={styles.input}
+                                />
+                            </View>
+
+                        })
+                    : null}
             </View>
+
         )
     }
 
-    let mySlides = [
-        returnForm(),
+    let slides = [
+        returnText([], [
+            {property: "email", placeHolder: "Email", isSignIn: true}, 
+            {property: "password", placeHolder: "Password", isSignIn: true}]
+            ),
         /////////////////
         <View style={styles.initialTextContainer}>
-            {returnText(["Hi There", "Do you have an account?"])}
+            {returnText(["Hi There!", "Do you have an account?"])}
         </View>,
         /////////////////
-        returnText(["You're..."]),
+        returnText(["You're a..."]),
         ////////////////
-        <View>
-            <Text>Hi There!</Text>
-            <Text>Do you have an account?</Text>
-        </View>,
+        returnText(["Let's create your account!"], [{property: "schoolCode", title: "School Code", placeHolder: "Ask your teacher for your school code"}]),
+        returnText(["What should we call you?"], [{property: "alias", title: "Alias", placeHolder: ""}]),
+        returnText(["Just 2 more steps!"], [{property: "email", title: "Email", placeHolder: ""}]),
+        returnText(["Almost Done!"], [{property: "password", title: "Password", placeHolder: ""}]),
+        returnText(["Last Step!"], [{property: "passwordCheck", title: "Confirm Password", placeHolder: ""}]),
+
+
     ]
 
-    let screenWidth = Dimensions.get('window').width;
-
-    let marginValue = (screenWidth - 200) / 2;
 
     useEffect(() => {
         BackHandler.addEventListener("hardwareBackPress", () => {
@@ -69,12 +105,12 @@ const LandingScreen = () => {
             })
         }
     }, [appLocation])
+
     //Logo Animations
-    const translateLogoXValue = useRef(new Animated.Value(marginValue)).current;
     const translateLogoYValue = useRef(new Animated.Value(116)).current;
+    const translateLogoXValue = useRef(new Animated.Value(marginValue)).current;
     const scaleLogoXValue = useRef(new Animated.Value(1)).current;
     const scaleLogoYValue = useRef(new Animated.Value(1)).current;
-
 
     // Title X Animation
     const translateTitleXValue = useRef(new Animated.Value(screenWidth)).current;
@@ -100,8 +136,9 @@ const LandingScreen = () => {
         )
     }
 
+
     const returnButtons = () => {
-        let leftText, rightText;
+        let leftText, rightText, propertyName
         switch (appLocation) {
             case "signIn": 
                 leftText = "Back"
@@ -114,8 +151,14 @@ const LandingScreen = () => {
             break;
             case 2: {
                 // First page of Sign Up
-                leftText = "A Teacher"
-                rightText = "A Student";
+                leftText = "Teacher";
+                rightText = "Student";
+                propertyName = "type"
+                break;
+            }
+            case "Last": {
+                leftText = "Back";
+                rightText = "Submit";
                 break;
             }
             default: {
@@ -126,10 +169,10 @@ const LandingScreen = () => {
         }
         return (
         <View style={styles.footer}>
-                <TouchableOpacity style={styles.button} onPress={()=>handlePress(leftText)}>
+                <TouchableOpacity style={styles.button} onPress={()=>handlePress(leftText, propertyName)}>
                     <Text style={styles.buttonText}>{leftText}</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={()=>handlePress(rightText)} >
+                <TouchableOpacity style={styles.button} onPress={()=>handlePress(rightText, propertyName)} >
                     <Text style={[styles.buttonText, styles.nope]}>{rightText}</Text>
                 </TouchableOpacity>
         </View>
@@ -172,9 +215,31 @@ const LandingScreen = () => {
             animate(slidesTranslateX, newValue);
             if (appLocation === 2) executeLogoAnimations(true);
             setAppLocation(previousLocation)
+        } else {
+            let previousLocation = slides.length-2;
+            newValue = -previousLocation*screenWidth;
+            animate(slidesTranslateX, newValue);
+            setAppLocation(previousLocation)
         }
     }
-    function handlePress(text) {
+    const goNext = () => {
+        console.log("app location pre move: ", appLocation, slides.length)
+        if (appLocation == slides.length-2){
+            setAppLocation("Last")
+        } else {
+            setAppLocation(appLocation+1);
+        }
+        executeSignUpAnimations(appLocation+1);
+
+
+    }
+    const processDynamicAnswer = (text, propertyName) => {
+        setNewUser({...newUser, [propertyName]: text.toLowerCase()})
+        goNext()
+    }
+
+    function handlePress(text, propertyName) {
+        console.log(text, propertyName)
         switch(text){
             case "Back": 
                 handleBack();
@@ -190,20 +255,21 @@ const LandingScreen = () => {
             case "Submit": 
                 console.log("submitted");
                 break;
-            default: 
-                setAppLocation(appLocation+1);
-                executeSignUpAnimations(appLocation+1);
+            case "Next": 
+                goNext()
+                break;
+            
+            default: processDynamicAnswer(text, propertyName)
 
         }
     }
-
     return (
         <View style={styles.container}>
             {returnHeaderAndLogo()}
-            <Animated.View style={[styles.slidesContainer, {transform: [{translateX: slidesTranslateX}]}]}>
-                {mySlides.map((slideJSX) => {
+            <Animated.View style={[styles.slidesContainer, {width: screenWidth*slides.length}, {transform: [{translateX: slidesTranslateX}]}]}>
+                {slides.map((slideJSX, index) => {
                     return (
-                        <View style={[styles.slide, {width: screenWidth}, ]} key={Math.random()}>
+                        <View style={[styles.slide, {width: screenWidth}]} key={index} >
                             {slideJSX}
                         </View>
                     )
@@ -213,5 +279,6 @@ const LandingScreen = () => {
         </View>
     )
 }
+
 
 export default LandingScreen

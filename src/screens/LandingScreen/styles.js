@@ -6,6 +6,7 @@ import { StyleSheet } from 'react-native'
 export default  styles = StyleSheet.create({
     container: {
         flex: 1,
+
     },
     body: {
         flex: 9,
@@ -29,6 +30,12 @@ export default  styles = StyleSheet.create({
         height: "100%",
         flex: 4,
     },
+    textAndInputContainer: {
+        width: "80%",
+        display: "flex",
+        alignItems: "flex-start"
+    },
+
     footer: {
         display: 'flex',
         flexDirection: 'row',
@@ -38,9 +45,18 @@ export default  styles = StyleSheet.create({
     initialTextContainer: {
         position: "absolute",
         top: 250,
+        display: "flex",
+    },
+    basicTextContainer: {
+        display: "flex",
+        alignItems: "center",
+        width: "100%"
+    },
+    basicText: {
         fontWeight: "bold",
-        fontSize: 20
-
+        fontSize: 20,
+        marginBottom: 60
+        
     },
     animatedContainer: {
         width: 200,
@@ -110,7 +126,7 @@ export default  styles = StyleSheet.create({
         position: "absolute",
         flexDirection: "row",
         height: "100%",
-        width: "auto"
+        width: "auto",
     },
     slide: {
         width: "100%",
@@ -125,7 +141,9 @@ export default  styles = StyleSheet.create({
     },
     inputLabel:{
         fontWeight: 'bold',
-        fontSize: 16
+        fontSize: 16,
+        marginBottom: 12,
+        marginLeft: 4
     },
     simpleInput: {
         borderWidth: 1,
@@ -143,9 +161,7 @@ export default  styles = StyleSheet.create({
     input: {
         borderWidth: 2, 
         borderColor: 'rgb(117, 203, 253)',
-        margin: 20,
-        width: '80%',
-        fontSize: 20,
+        width: '100%',
         padding: 12
     },
 })
